@@ -10,5 +10,5 @@ from .views import *
 urlpatterns = [
     path('token', TokenObtainPairView.as_view()),
     path('token/refresh', TokenRefreshView.as_view()),
-    path('page-url', PageUrlView.as_view()),
+    path('page-path', PagePathView.as_view()),
 ]
