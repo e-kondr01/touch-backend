@@ -27,10 +27,10 @@ class CardSerializer(serializers.ModelSerializer):
     class Meta:
         model = Card
         fields = ['id', 'owner', 'page_path', 'photo', 'delimiter', 'fields']
+        read_only_fields = ['fields']
 
     def update(self, instance, validated_data):
         owner_data = validated_data.pop('owner')
-        fields_data = validated_data.pop('fields')
 
         instance.page_path = validated_data.get(
             'page_path', instance.page_path) # Тут нужно проверить уникальность
@@ -44,8 +44,5 @@ class CardSerializer(serializers.ModelSerializer):
         owner.first_name = owner_data.get('first_name', owner.first_name)
         owner.last_name = owner_data.get('last_name', owner.last_name)
         owner.save()
-
-        '''по полям пройтись'''
-
 
         return instance

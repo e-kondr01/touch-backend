@@ -4,5 +4,7 @@ from .views import *
 
 
 urlpatterns = [
-    path('<str:page_path>', CardView.as_view()),
+    path('cards/<str:page_path>', RetrieveUpdateCardView.as_view()),
+    path('fields', CreateFieldView.as_view()),
+    path('fields/<int:pk>', UpdateFieldView.as_view()),
 ]
