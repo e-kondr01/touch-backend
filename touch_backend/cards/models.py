@@ -32,6 +32,10 @@ class Card(models.Model):
     def first_name(self):
         return self.owner.first_name
 
+    class Meta:
+        verbose_name = "визитка"
+        verbose_name_plural = "визитки"
+
 
 class Field(models.Model):
     card = models.ForeignKey(
@@ -51,3 +55,8 @@ class Field(models.Model):
 
     def __str__(self) -> str:
         return f'{self.title} из {self.card}'
+
+    class Meta:
+        verbose_name = "поле"
+        verbose_name_plural = "поля"
+        ordering = ['order']

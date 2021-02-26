@@ -8,7 +8,6 @@ from .serializers import *
 class RetrieveUpdateCardView(generics.RetrieveUpdateAPIView):
     queryset = Card.objects.all()
     serializer_class = CardSerializer
-    lookup_field = 'page_path'
 
     def check_object_permissions(self, request, obj):
         if request.method != 'GET':

@@ -13,7 +13,8 @@ class PagePathView(APIView):
         resp = {}
         try:
             page_path = request.user.card.page_path
-            resp['page_url'] = page_path
+            resp['page_id'] = request.user.card.id
+            resp['page_path'] = page_path
         except Card.DoesNotExist:
             resp['error'] = 'У этого пользователя нет визитки'
         return Response(resp, status=status.HTTP_200_OK)
