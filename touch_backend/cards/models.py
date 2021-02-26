@@ -18,7 +18,8 @@ class Card(models.Model):
         unique=True,
         max_length=128)
     photo = models.ImageField(
-        blank=True, verbose_name='фото')
+        blank=True, verbose_name='фото',
+        upload_to='card_photos')
     delimiter = models.CharField(
         max_length=64, default='default',
         verbose_name='разделитель')

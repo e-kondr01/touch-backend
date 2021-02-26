@@ -56,3 +56,8 @@ class CardSerializer(serializers.ModelSerializer):
         model = Card
         fields = ['id', 'owner', 'page_path', 'photo', 'delimiter', 'fields']
         read_only_fields = ['fields']
+
+    def update(self, instance, validated_data):
+        '''Удаляем старую пикчу'''
+        instance.photo.delete()
+        return super().update(instance, validated_data)
