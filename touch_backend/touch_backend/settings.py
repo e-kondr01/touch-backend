@@ -18,7 +18,7 @@ from pathlib import Path
 env = environ.Env(
     DEBUG=(bool, False),
     ALLOWED_HOSTS=(list, []),
-    CORS_ALLOWED_ORIGINS=(list, [])
+    CORS_ALLOWED_ORIGINS=(list, []),
 )
 
 environ.Env.read_env()
@@ -139,6 +139,15 @@ STATIC_ROOT = BASE_DIR.parent / 'static'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR.parent / 'media'
 
+# SSl/https
+
+SECURE_SSL_REDIRECT = env.bool('SECURE_SSL_REDIRECT')
+CSRF_COOKIE_SECURE = env.bool('CSRF_COOKIE_SECURE')
+SESSION_COOKIE_SECURE = env.bool('SESSION_COOKIE_SECURE')
+SECURE_HSTS_SECONDS = env.int('SECURE_HSTS_SECONDS')
+SECURE_HSTS_INCLUDE_SUBDOMAINS = env.bool('SECURE_HSTS_INCLUDE_SUBDOMAINS')
+SECURE_HSTS_PRELOAD = env.bool('SECURE_HSTS_PRELOAD')
+
 
 ''' Third party settings '''
 
@@ -160,4 +169,4 @@ SIMPLE_JWT = {
 
 # CORS
 
-CORS_ALLOWED_ORIGINS = env('CORS_ALLOWED_ORIGINS')
+CORS_ALLOWED_ORIGINS = env.list('CORS_ALLOWED_ORIGINS')
