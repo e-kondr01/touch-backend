@@ -6,6 +6,7 @@ from cards.models import Card
 
 
 @receiver(post_save, sender=User, dispatch_uid="create_card")
-def create_card(sender, instance, **kwargs):
-    new_card = Card(owner=instance, page_path=instance.username)
-    new_card.save()
+def create_card(sender, instance, created, **kwargs):
+    if created:
+        new_card = Card(owner=instance, page_path=instance.username)
+        new_card.save()
