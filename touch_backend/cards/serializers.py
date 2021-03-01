@@ -1,23 +1,21 @@
-from django.contrib.auth.models import User
 from rest_framework import serializers
 
 from .models import *
 
 
-class FieldSerializer(serializers.ModelSerializer):
+class CreateFieldSerializer(serializers.ModelSerializer):
+    order = serializers.IntegerField(required=False)
+    # Порядок должен быть в response, но не в request body.
+
     class Meta:
         model = Field
         fields = ['id', 'title', 'value', 'link', 'order']
 
-    def create(self, validated_data):
-        '''Изменяем порядок остальных полей '''
-        fields = validated_data['card'].fields.filter(
-            order__gte=validated_data['order']
-        )
-        for field in fields:
-            field.order += 1
-            field.save()
-        return super().create(validated_data)
+
+class RetrieveUpdateFieldSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Field
+        fields = ['id', 'title', 'value', 'link', 'order']
 
     def update(self, instance, validated_data):
         '''Изменяем порядок остальных полей '''
@@ -46,15 +44,13 @@ class FieldSerializer(serializers.ModelSerializer):
 
 
 class CardSerializer(serializers.ModelSerializer):
-    fields = FieldSerializer(many=True, required=False)
-    owner = serializers.SlugRelatedField(
-        slug_field='username',
-        read_only=True
-    )
+    fields = RetrieveUpdateFieldSerializer(many=True, required=False)
 
     class Meta:
         model = Card
-        fields = ['id', 'owner', 'page_path', 'photo', 'delimiter', 'fields']
+        fields = [
+            'id', 'displayed_name', 'page_path', 'photo', 'fields'
+            ]
         read_only_fields = ['fields']
 
     def update(self, instance, validated_data):

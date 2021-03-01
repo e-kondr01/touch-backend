@@ -102,18 +102,6 @@ DATABASES = {
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
 ]
 
 
@@ -139,7 +127,7 @@ STATIC_ROOT = BASE_DIR.parent / 'static'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR.parent / 'media'
 
-# SSl/https
+# SSL/https
 
 SECURE_SSL_REDIRECT = env.bool('SECURE_SSL_REDIRECT')
 CSRF_COOKIE_SECURE = env.bool('CSRF_COOKIE_SECURE')

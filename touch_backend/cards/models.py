@@ -20,18 +20,13 @@ class Card(models.Model):
     photo = models.ImageField(
         blank=True, verbose_name='фото',
         upload_to='card_photos')
-    delimiter = models.CharField(
-        max_length=64, default='default',
-        verbose_name='разделитель')
+    displayed_name = models.CharField(
+        max_length=256,
+        default='Никнэйм'
+    )
 
     def __str__(self) -> str:
         return f'Визитка {self.owner}'
-
-    def last_name(self):
-        return self.owner.last_name
-
-    def first_name(self):
-        return self.owner.first_name
 
     class Meta:
         verbose_name = "визитка"
