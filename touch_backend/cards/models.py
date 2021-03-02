@@ -22,7 +22,8 @@ class Card(models.Model):
         upload_to='card_photos')
     displayed_name = models.CharField(
         max_length=256,
-        default='Никнэйм'
+        default='Никнэйм',
+        verbose_name='Отображаемый ник'
     )
 
     def __str__(self) -> str:
@@ -41,13 +42,14 @@ class Field(models.Model):
         max_length=64, verbose_name='название')
     value = models.CharField(
         max_length=1024,
-        verbose_name='значение')
-    link = models.URLField(
+        verbose_name='значение',
+        blank=True)
+    link = models.CharField(
+        max_length=256,
         verbose_name='ссылка',
         blank=True)
     order = models.PositiveSmallIntegerField(
-        verbose_name='порядок в списке'
-    )
+        verbose_name='порядок в списке')
 
     def __str__(self) -> str:
         return f'{self.title} из {self.card}'

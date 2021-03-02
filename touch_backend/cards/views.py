@@ -4,6 +4,7 @@ from rest_framework.permissions import IsAuthenticated
 
 from .models import *
 from .serializers import *
+from .utilities import generate_link
 
 
 class RetrieveUpdateCardView(generics.RetrieveUpdateAPIView):
@@ -36,10 +37,22 @@ class CreateFieldView(generics.CreateAPIView):
         ]
         if not max_order:
             max_order = 0
-        serializer.save(
-            card=self.request.user.card,
-            order=max_order+1
+
+        if 'link' in serializer.validated_data:
+            nick = serializer.validated_data['link']
+            type = serializer.validated_data['title']
+            link = generate_link(nick=nick, type=type)
+
+            serializer.save(
+                card=self.request.user.card,
+                order=max_order+1,
+                link=link
             )
+        else:
+            serializer.save(
+                card=self.request.user.card,
+                order=max_order+1
+                )
 
 
 class UpdateDestroyFieldView(generics.RetrieveUpdateDestroyAPIView):
@@ -55,6 +68,18 @@ class UpdateDestroyFieldView(generics.RetrieveUpdateDestroyAPIView):
                     code='403'
                 )
         return super().check_object_permissions(request, obj)
+
+    def perform_update(self, serializer):
+        if 'link' in serializer.validated_data:
+            nick = serializer.validated_data['link']
+            if 'title' in serializer.validated_data:
+                type = serializer.validated_data['title']
+            else:
+                type = self.get_object().title
+            link = generate_link(nick=nick, type=type)
+            serializer.save(link=link)
+        else:
+            serializer.save()
 
     def perform_destroy(self, instance):
         order = instance.order
