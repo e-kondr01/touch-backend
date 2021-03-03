@@ -1,5 +1,5 @@
 from django.core.exceptions import ValidationError
-from django.core.validators import EmailValidator, URLValidator
+from django.core.validators import URLValidator
 
 supported_domains = {
     'twitter': 'https://twitter.com/',
@@ -21,15 +21,8 @@ def process_link(input='', type=''):
         validator(input)
         return input
     except ValidationError:
-        if type == 'phone':
+        if type == 'phone' or type == 'email':
             return input
-        elif type == 'email':
-            try:
-                e_validator = EmailValidator()
-                e_validator(input)
-                return input
-            except ValidationError:
-                return ''
         elif type not in supported_domains:
             return ''
         else:
