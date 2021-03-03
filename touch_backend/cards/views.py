@@ -4,7 +4,7 @@ from rest_framework.permissions import IsAuthenticated
 
 from .models import *
 from .serializers import *
-from .utilities import generate_link
+from .utilities import process_link
 
 
 class RetrieveUpdateCardView(generics.RetrieveUpdateAPIView):
@@ -39,9 +39,9 @@ class CreateFieldView(generics.CreateAPIView):
             max_order = 0
 
         if 'link' in serializer.validated_data:
-            nick = serializer.validated_data['link']
+            input = serializer.validated_data['link']
             type = serializer.validated_data['title']
-            link = generate_link(nick=nick, type=type)
+            link = process_link(input=input, type=type)
 
             serializer.save(
                 card=self.request.user.card,
@@ -71,12 +71,12 @@ class UpdateDestroyFieldView(generics.RetrieveUpdateDestroyAPIView):
 
     def perform_update(self, serializer):
         if 'link' in serializer.validated_data:
-            nick = serializer.validated_data['link']
+            input = serializer.validated_data['link']
             if 'title' in serializer.validated_data:
                 type = serializer.validated_data['title']
             else:
                 type = self.get_object().title
-            link = generate_link(nick=nick, type=type)
+            link = process_link(input=input, type=type)
             serializer.save(link=link)
         else:
             serializer.save()

@@ -29,6 +29,9 @@ class Card(models.Model):
     def __str__(self) -> str:
         return f'Визитка {self.owner}'
 
+    def get_absolute_url(self):
+        return 'https://touchip.ru/' + str(self.page_path)
+
     class Meta:
         verbose_name = "визитка"
         verbose_name_plural = "визитки"
@@ -45,7 +48,7 @@ class Field(models.Model):
         verbose_name='значение',
         blank=True)
     link = models.CharField(
-        max_length=256,
+        max_length=1024,
         verbose_name='ссылка',
         blank=True)
     order = models.PositiveSmallIntegerField(
