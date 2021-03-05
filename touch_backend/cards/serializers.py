@@ -55,5 +55,6 @@ class CardSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         '''Удаляем старую пикчу'''
-        instance.photo.delete()
+        if 'photo' in validated_data:
+            instance.photo.delete()
         return super().update(instance, validated_data)
