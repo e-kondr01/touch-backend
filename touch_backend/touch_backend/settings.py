@@ -42,9 +42,6 @@ ALLOWED_HOSTS = env.list('ALLOWED_HOSTS')
 # Application definition
 
 INSTALLED_APPS = [
-    'accounts',
-    'cards',
-
     'rest_framework',
     'rest_framework_simplejwt',
 
@@ -54,6 +51,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'accounts',
+    'cards',
 ]
 
 MIDDLEWARE = [
