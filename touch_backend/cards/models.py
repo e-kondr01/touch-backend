@@ -25,6 +25,16 @@ class Card(models.Model):
         default='Никнэйм',
         verbose_name='Отображаемый ник'
     )
+    color_one = models.CharField(
+        max_length=16,
+        verbose_name="цвет 1",
+        default="#005eff"
+    )
+    color_two = models.CharField(
+        max_length=16,
+        verbose_name="цвет 2",
+        default="#4508d4"
+    )
 
     def __str__(self) -> str:
         return f'Визитка {self.owner}'

@@ -49,7 +49,9 @@ class CardSerializer(serializers.ModelSerializer):
     class Meta:
         model = Card
         fields = [
-            'id', 'displayed_name', 'page_path', 'photo', 'fields'
+            'id', 'displayed_name', 'page_path', 'photo',
+            'color_one', 'color_two',
+            'fields'
             ]
         read_only_fields = ['fields']
 
