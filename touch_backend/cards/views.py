@@ -1,7 +1,7 @@
 from django.core.files import File
 from django.db.models import Max
 from rest_framework import generics
-from rest_framework.permissions import IsAuthenticated
+from rest_framework import permissions
 from rest_framework.response import Response
 from io import BytesIO
 
@@ -27,7 +27,7 @@ class RetrieveUpdateCardView(generics.RetrieveUpdateAPIView):
 
 
 class CreateFieldView(generics.CreateAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
     serializer_class = CreateFieldSerializer
 
     def perform_create(self, serializer):
@@ -59,7 +59,7 @@ class CreateFieldView(generics.CreateAPIView):
 
 
 class UpdateDestroyFieldView(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
     serializer_class = RetrieveUpdateFieldSerializer
     queryset = Field.objects.all()
 
@@ -101,6 +101,7 @@ class RetrieveQRView(generics.RetrieveAPIView):
     queryset = Card.objects.all()
     serializer_class = QRSerializer
     lookup_field = "page_path"
+    permission_classes = [permissions.IsAuthenticated]
 
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
