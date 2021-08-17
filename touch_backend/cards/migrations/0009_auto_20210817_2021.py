@@ -11,7 +11,8 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name="card",
             name="has_changed_username",
-            field=models.BooleanField(defaul=False, verbose_name="менял логин")
+            field=models.BooleanField(
+                default=False, verbose_name="менял логин")
         ),
         migrations.AddField(
             model_name="card",
