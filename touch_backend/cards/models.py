@@ -1,3 +1,5 @@
+import qrcode
+
 from django.contrib.auth.models import User
 from django.db import models
 
@@ -35,6 +37,29 @@ class Card(models.Model):
         verbose_name="цвет 2",
         default="#4508d4"
     )
+
+    has_changed_username = models.BooleanField(
+        default=False,
+        verbose_name="менял логин"
+    )
+
+    qr = models.ImageField(
+        blank=True,
+        null=True,
+        verbose_name="QR код"
+    )
+
+    def generate_qr_code(self):
+        """Создаёт QR код данной визитки"""
+        url = f"https://touchip.ru/{self.page_path}"
+        qr = qrcode.QRCode(
+            box_size=10,
+            border=9
+        )
+        qr.add_data(url)
+        qr.make()
+        img = qr.make_image()
+        return img
 
     def __str__(self) -> str:
         return f'Визитка {self.owner}'

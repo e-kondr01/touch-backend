@@ -51,8 +51,9 @@ class CardSerializer(serializers.ModelSerializer):
         fields = [
             'id', 'displayed_name', 'page_path', 'photo',
             'color_one', 'color_two',
+            "has_changed_username",
             'fields'
-            ]
+        ]
         read_only_fields = ['fields']
 
     def update(self, instance, validated_data):
@@ -60,3 +61,12 @@ class CardSerializer(serializers.ModelSerializer):
         if 'photo' in validated_data:
             instance.photo.delete()
         return super().update(instance, validated_data)
+
+
+class QRSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Card
+        fields = [
+            "id",
+            "qr"
+        ]

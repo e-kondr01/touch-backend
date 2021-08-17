@@ -1,6 +1,9 @@
+from django.core.files import File
 from django.db.models import Max
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from io import BytesIO
 
 from .models import *
 from .serializers import *
@@ -16,10 +19,10 @@ class RetrieveUpdateCardView(generics.RetrieveUpdateAPIView):
         if request.method != 'GET':
             if (request.user != obj.owner):
                 self.permission_denied(
-                        request,
-                        message='Визитка другого человека',
-                        code='403'
-                    )
+                    request,
+                    message='Визитка другого человека',
+                    code='403'
+                )
         return super().check_object_permissions(request, obj)
 
 
@@ -52,7 +55,7 @@ class CreateFieldView(generics.CreateAPIView):
             serializer.save(
                 card=self.request.user.card,
                 order=max_order+1
-                )
+            )
 
 
 class UpdateDestroyFieldView(generics.RetrieveUpdateDestroyAPIView):
@@ -63,10 +66,10 @@ class UpdateDestroyFieldView(generics.RetrieveUpdateDestroyAPIView):
     def check_object_permissions(self, request, obj):
         if (request.user != obj.card.owner):
             self.permission_denied(
-                    request,
-                    message='Поле из чужой визитки',
-                    code='403'
-                )
+                request,
+                message='Поле из чужой визитки',
+                code='403'
+            )
         return super().check_object_permissions(request, obj)
 
     def perform_update(self, serializer):
@@ -91,3 +94,25 @@ class UpdateDestroyFieldView(generics.RetrieveUpdateDestroyAPIView):
         for field in fields:
             field.order -= 1
             field.save()
+
+
+class RetrieveQRView(generics.RetrieveAPIView):
+    """View для получения QR"""
+    queryset = Card.objects.all()
+    serializer_class = QRSerializer
+    lookup_field = "page_path"
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+
+        if not instance.qr:
+            """Создаём QR"""
+            qr_img = instance.generate_qr_code()
+            qr_io = BytesIO()
+            qr_img.save(qr_io, "JPEG", quality=85)
+            qr = File(qr_io, name=f"qr_{instance.pk}")
+            instance.qr = qr
+            instance.save()
+
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
