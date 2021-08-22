@@ -3,6 +3,7 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.exceptions import ValidationError
 
 from cards.models import Card
 
@@ -26,18 +27,25 @@ class ChangeUsernameView(APIView):
     def patch(self, request, *args, **kwargs):
         """Меняем логин и сохраняем то, что пользователь его менял"""
 
-        new_username = request.data["username"]
-        user = request.user
-        user.username = new_username
-        user.save()
+        if "username" in request.data:
+            new_username = request.data["username"]
+            user = request.user
+            user.username = new_username
+            user.save()
 
-        card = user.card
-        card.has_changed_username = True
-        card.save()
+            card = user.card
+            card.has_changed_username = True
+            card.page_path = new_username
+            card.save()
 
-        resp = {}
-        resp["new_username"] = new_username
-        return Response(resp, status=status.HTTP_200_OK)
+            resp = {}
+            resp["new_username"] = new_username
+            return Response(resp, status=status.HTTP_200_OK)
+
+        else:
+            detail = {}
+            detail["error"] = "Provide username"
+            raise ValidationError(detail=detail)
 
 
 class IsUsernameUniqueView(APIView):
@@ -45,9 +53,14 @@ class IsUsernameUniqueView(APIView):
 
     def post(self, request, *args, **kwargs):
         user = get_user_model()
-        username = request.data["username"]
-        if user.objects.filter(username=username):
-            resp = {'username_status': 'taken'}
+        if "username" in request.data:
+            username = request.data["username"]
+            if user.objects.filter(username=username):
+                resp = {'username_status': 'taken'}
+            else:
+                resp = {'username_status': 'free'}
+            return Response(resp, status=status.HTTP_200_OK)
         else:
-            resp = {'username_status': 'free'}
-        return Response(resp, status=status.HTTP_200_OK)
+            detail = {}
+            detail["error"] = "Provide username"
+            raise ValidationError(detail=detail)
