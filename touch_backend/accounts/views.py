@@ -23,7 +23,7 @@ class PagePathView(APIView):
 class ChangeUsernameView(APIView):
     permission_classes = [IsAuthenticated]
 
-    def update(self, request, *args, **kwargs):
+    def patch(self, request, *args, **kwargs):
         """Меняем логин и сохраняем то, что пользователь его менял"""
 
         new_username = request.data["username"]
