@@ -11,5 +11,6 @@ urlpatterns = [
     path('token', TokenObtainPairView.as_view()),
     path('token/refresh', TokenRefreshView.as_view()),
     path('page-path', PagePathView.as_view()),
-    path("", include("djoser.urls")),
+    path("me", ChangeUsernameView.as_view()),
+    path("is-username-unique", IsUsernameUniqueView.as_view())
 ]
