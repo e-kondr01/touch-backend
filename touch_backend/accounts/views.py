@@ -65,10 +65,9 @@ class IsUsernameUniqueView(APIView):
     """Проверка на уникальность username"""
 
     def post(self, request, *args, **kwargs):
-        user = get_user_model()
         if "username" in request.data:
             username = request.data["username"]
-            if user.objects.filter(username=username):
+            if Card.objects.filter(page_path=username):
                 resp = {'username_status': 'taken'}
             else:
                 resp = {'username_status': 'free'}
