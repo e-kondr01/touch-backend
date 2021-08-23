@@ -7,10 +7,12 @@ from django.db import models
 class Card(models.Model):
     """Модель визитки"""
 
-    owner = models.ForeignKey(
+    owner = models.OneToOneField(
         to=User,
         on_delete=models.CASCADE,
-        verbose_name='владелец'
+        verbose_name='владелец',
+        blank=True,
+        null=True
     )
 
     '''page_path надо добавить после

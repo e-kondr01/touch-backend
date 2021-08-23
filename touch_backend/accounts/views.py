@@ -38,6 +38,7 @@ class ChangeUsernameView(APIView):
             card.has_changed_username = True
             card.page_path = new_username
             card.redirect_url = settings.HOST + new_username
+            card.owner = None
             card.save()
 
             new_card = Card.objects.create(
