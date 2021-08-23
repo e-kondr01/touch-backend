@@ -73,7 +73,7 @@ class Card(models.Model):
         return img
 
     def __str__(self) -> str:
-        return f'Визитка {self.owner}'
+        return f'Визитка {self.page_path}'
 
     def get_absolute_url(self):
         return 'https://touchip.ru/' + str(self.page_path)
