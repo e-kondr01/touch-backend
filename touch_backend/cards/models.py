@@ -5,9 +5,13 @@ from django.db import models
 
 
 class Card(models.Model):
-    owner = models.OneToOneField(
-        User, on_delete=models.CASCADE,
-        verbose_name='владелец')
+    """Модель визитки"""
+
+    owner = models.ForeignKey(
+        to=User,
+        on_delete=models.CASCADE,
+        verbose_name='владелец'
+    )
 
     '''page_path надо добавить после
     {{host}}/cards/ , чтобы получить ссылку
@@ -47,6 +51,11 @@ class Card(models.Model):
         blank=True,
         null=True,
         verbose_name="QR код"
+    )
+
+    redirect_url = models.URLField(
+        verbose_name="ссылка для редиректа",
+        blank=True
     )
 
     def generate_qr_code(self):

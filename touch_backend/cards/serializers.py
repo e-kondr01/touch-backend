@@ -52,6 +52,7 @@ class CardSerializer(serializers.ModelSerializer):
             'id', 'displayed_name', 'page_path', 'photo',
             'color_one', 'color_two',
             "has_changed_username",
+            "redirect_url",
             'fields'
         ]
         read_only_fields = ['fields']

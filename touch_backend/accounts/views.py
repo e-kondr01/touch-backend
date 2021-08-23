@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.conf import settings
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
@@ -36,7 +37,19 @@ class ChangeUsernameView(APIView):
             card = user.card
             card.has_changed_username = True
             card.page_path = new_username
+            card.redirect_url = settings.HOST + new_username
             card.save()
+
+            new_card = Card.objects.create(
+                owner=request.user,
+                page_path=new_username,
+                photo=card.photo,
+                displayed_name=card.displayed_name,
+                color_one=card.color_one,
+                color_two=card.color_two,
+                has_changed_username=True,
+                qr=card.qr
+            )
 
             resp = {}
             resp["new_username"] = new_username

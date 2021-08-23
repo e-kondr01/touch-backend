@@ -159,6 +159,8 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=14),
 }
 
+# Logging
+
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
@@ -213,3 +215,7 @@ sentry_sdk.init(
 )
 
 ignore_logger("django.security.DisallowedHost")
+
+# Constants
+
+HOST = "https://touchip.ru/"
