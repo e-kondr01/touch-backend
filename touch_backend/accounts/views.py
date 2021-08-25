@@ -51,6 +51,10 @@ class ChangeUsernameView(APIView):
                 qr=card.qr
             )
 
+            for field in card.fields.all():
+                field.card = new_card
+                field.save()
+
             resp = {}
             resp["new_username"] = new_username
             return Response(resp, status=status.HTTP_200_OK)

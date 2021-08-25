@@ -52,7 +52,8 @@ class Card(models.Model):
     qr = models.ImageField(
         blank=True,
         null=True,
-        verbose_name="QR код"
+        verbose_name="QR код",
+        upload_to="qr_codes"
     )
 
     redirect_url = models.URLField(
